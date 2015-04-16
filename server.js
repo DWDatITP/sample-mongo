@@ -9,8 +9,8 @@ var port = process.env.PORT || 5000;
 var mongoose = require('mongoose');
 var uriUtil = require('mongodb-uri');
 
-var mongodbUri = process.env.MONGOLAB_URI ||
-  'mongodb://localhost:27017/my-app';
+// Get this value from `heroku config`
+var mongodbUri = "mongodb://heroku_app35835439:rfu8pfq812363mtn9avn68criv@ds061651.mongolab.com:61651/heroku_app35835439?replicaSet=rs-ds061651";
 var mongooseUri = uriUtil.formatMongoose(mongodbUri);
 
 mongoose.connect(mongooseUri);
