@@ -41,10 +41,16 @@ after the line where you required mongoose:
 
 `var mongodbUri = 'mongodb://heroku_app35835439:rfu8pfq812363mtn9avn68criv@ds061651.mongolab.com:61651/heroku_app35835439?replicaSet=rs-ds061651';`
 
+[Link to
+code](https://github.com/DWDatITP/sample-mongo/blob/5b3b2112212bc98cb1ca898f6022a28d415bdb03/server.js#L12).
+
 Next step is to tell mongoose to connect to this url. Add to your
 server.js:
 
 `mongoose.connect(mongodbUri);`
+
+[Link to
+code](https://github.com/DWDatITP/sample-mongo/blob/5b3b2112212bc98cb1ca898f6022a28d415bdb03/server.js#L14).
 
 Then get the connection from mongoose and store it in a variable called
 `db`:
@@ -52,6 +58,9 @@ Then get the connection from mongoose and store it in a variable called
 ```
 var db = mongoose.connection;
 ```
+
+[Link to
+code](https://github.com/DWDatITP/sample-mongo/blob/5b3b2112212bc98cb1ca898f6022a28d415bdb03/server.js#L15).
 
 With this `db` variable, we can add two callbacks for two events that
 the db can emit: `error`, and `open`. Note that this is just so that we
@@ -73,6 +82,9 @@ db.once('open', function(){
 });
 ```
 
+[Link to
+code](https://github.com/DWDatITP/sample-mongo/blob/5b3b2112212bc98cb1ca898f6022a28d415bdb03/server.js#L16-L21).
+
 You should be able to run your app now and see the message "Successfully
 connected to mongo!" appear in the server console. Once you have that
 working, continue.
@@ -89,6 +101,9 @@ var userSchema = mongoose.Schema({
 });
 ```
 
+[Link to
+code](https://github.com/DWDatITP/sample-mongo/blob/5b3b2112212bc98cb1ca898f6022a28d415bdb03/server.js#L23-L25).
+
 Now that we have a schema, define the User model. We use a capitalized
 word for our `User` variable because it is a class (this is a convention
 in JavaScript programming):
@@ -96,6 +111,9 @@ in JavaScript programming):
 ```
 var User = mongoose.model('users', userSchema);
 ```
+
+[Link to
+code](https://github.com/DWDatITP/sample-mongo/blob/5b3b2112212bc98cb1ca898f6022a28d415bdb03/server.js#L27).
 
 The first argument, `'users'`, tells mongoose what collection to use in
 our mongo database to store User models. You could use a different value
@@ -161,6 +179,9 @@ app.get('/', function(req, res){
 });
 ```
 
+[Link to
+code](https://github.com/DWDatITP/sample-mongo/blob/5b3b2112212bc98cb1ca898f6022a28d415bdb03/server.js#L43-L50).
+
 Next, we need to update our template so that it can show the users.
 In the case of this example we are rendering the `index.ejs` file
 located at `views/index.ejs`. If
@@ -192,6 +213,9 @@ Altogether it looks like this:
   <p>User: <%= user.username %></p>
 <% }); %>
 ```
+
+[Link to
+code](https://github.com/DWDatITP/sample-mongo/blob/5b3b2112212bc98cb1ca898f6022a28d415bdb03/views/index.ejs#L17-L19).
 
 Try running your again to make sure it's still working. If you are
 connected to the class mongo database you should see some users show up.
@@ -260,6 +284,9 @@ app.post('/create_user', function(req, res){
   });
 });
 ```
+
+[Link to
+code](https://github.com/DWDatITP/sample-mongo/blob/5b3b2112212bc98cb1ca898f6022a28d415bdb03/server.js#L58-L74).
 
 Now run your app and you should be able to save a user and see it appear
 at the end of the list of users on the index page.
