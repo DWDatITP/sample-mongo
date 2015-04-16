@@ -4,22 +4,20 @@ var bodyParser = require('body-parser');
 var port = process.env.PORT || 5000;
 
 /************  Connect to Mongo ***********/
-// Load the two libraries we need to connect to mongo
+// Load the library we need to connect to mongo
 // using mongoose
 var mongoose = require('mongoose');
-var uriUtil = require('mongodb-uri');
 
 // Get this value from `heroku config`
-var mongodbUri = "mongodb://heroku_app35835439:rfu8pfq812363mtn9avn68criv@ds061651.mongolab.com:61651/heroku_app35835439?replicaSet=rs-ds061651";
-var mongooseUri = uriUtil.formatMongoose(mongodbUri);
+var mongodbUri = 'mongodb://heroku_app35835439:rfu8pfq812363mtn9avn68criv@ds061651.mongolab.com:61651/heroku_app35835439?replicaSet=rs-ds061651';
 
-mongoose.connect(mongooseUri);
+mongoose.connect(mongodbUri);
 var db = mongoose.connection;
 db.on('error', function(error){
-  console.log('Error connecting to Mongo: ',error);
+  console.log('There was an error connecting to mongo: ' + error);
 });
 db.once('open', function(){
-  console.log('Successfully connected to mongoose');
+  console.log('Successfully connected to mongo!');
 });
 
 var userSchema = mongoose.Schema({
@@ -42,8 +40,14 @@ app.use(bodyParser.urlencoded({extended:true}));
 // Using `app.get('/')` configures our app
 // to listen for an http GET request for the "/" url
 app.get('/', function(req, res){
-  // renders the file at views/index.ejs
-  res.render('index');
+  User.find({}, function(error, users){
+    if (error) {
+       res.send('Error fetching users: ' + error);
+    } else {
+      // renders the file at views/index.ejs
+      res.render('index', {users: users});
+    }
+  });
 });
 
 // configure our express app to listen for an http POST
@@ -61,15 +65,11 @@ app.post('/create_user', function(req, res){
   var user = new User({username: username});
 
   user.save(function(err){
-    if (err) { res.send('Error: ' + err); }
-
-    res.send('I created a user named: ' + username);
-  });
-});
-
-app.get('/users', function(req, res){
-  User.find({}, function(err, users){
-    res.render('users', {users: users});
+    if (err) {
+      res.send('Error saving user: ' + err);
+    } else {
+      res.redirect('/');
+    }
   });
 });
 
